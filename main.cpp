@@ -8,10 +8,16 @@
 
 int main(int argc, char** argv) {
     initStack();
+    initHeap();
 
     push(1);
     push(1);
     add();
+    print();
+
+    push(10);
+    push(2);
+    div();
     print();
 
     exit(0);

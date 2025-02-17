@@ -10,53 +10,61 @@
 
 const int STACK_SIZE = 1000;
 
-static Cell stack[STACK_SIZE];
-static Cell* sp;
+// This stack grows from high addresses to low.
+// That is, from stack[STACK_SIZE] to stack[0].
+// That way, indexing into stack frames can use positive indexes,
+// which is much less confusing that negative indexes.
+static Cell* stack[STACK_SIZE];
+static Cell** sp;
 
-static Cell* stack_bottom;
+static Cell** stack_start;
+static Cell** stack_limit;
 
 // Stack functions
 
 void initStack()
 {
-    stack_bottom = &stack[STACK_SIZE];
-    sp = &stack[STACK_SIZE];
-}
+    stack_start = &stack[STACK_SIZE];
+    stack_limit = &stack[0];
 
-void add()
-{
-    push(pop_int() + pop_int());
+    // Initialize sp to indicate empty-stack condition
+    sp = stack_start;
 }
 
 void drop()
 {
-    if (sp == stack_bottom) {
+    if (sp == stack_start) {
         fatal("Stack underflow");
     }
     ++sp;
 }
 
+void dup()
+{
+    push(top());
+}
+
 int32_t pop_int()
 {
-    if (sp == stack_bottom) {
+    if (sp == stack_start) {
         fatal("Stack underflow");
     }
-    if (sp->type != INT_TYPE) {
+    if ((*sp)->type != INT_TYPE) {
         fatal("Top of stack is not an integer");
     }
-    return((sp++)->int_value);
+    return((*sp++)->int_val);
 }
 
 void print()
 {
-    if (sp == stack_bottom) {
+    if (sp == stack_start) {
         fatal("Stack underflow");
     }
 
-    switch (sp->type)
+    switch (top()->type)
     {
         case INT_TYPE:
-            std::cout << sp->int_value << '\n';
+            std::cout << top()->int_val << '\n';
             break;
         default:
             fatal("Unknown cell type");
@@ -65,19 +73,41 @@ void print()
     ++sp;
 }
 
+void push(Cell* p)
+{
+    if (sp == stack_limit) {
+        fatal("Stack overflow");
+    }
+
+    --sp;
+    *sp = p;
+}
+
 void push(int32_t i)
 {
-    (--sp)->type = INT_TYPE;
-    sp->int_value = i;
+    if (sp == stack_limit) {
+        fatal("Stack overflow");
+    }
+
+    --sp;
+    *sp = alloc(i);
 }
 
 void push(char ch)
 {
-    (--sp)->type = CHAR_TYPE;
-    sp->char_value = ch;
+    if (sp == stack_limit) {
+        fatal("Stack overflow");
+    }
+
+    --sp;
+    *sp = alloc(ch);
 }
 
 Cell* top()
 {
-    return(sp);
+    if (sp == stack_start) {
+        fatal("Empty stack");
+    }
+
+    return(*sp);
 }
