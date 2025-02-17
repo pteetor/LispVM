@@ -14,7 +14,7 @@ void initHeap()
     hp = &heap[0];
 }
 
-static Cell* alloc()
+static Cell* new_cell()
 {
     if (hp == heap_limit) {
         fatal("Heap exhausted");
@@ -23,17 +23,17 @@ static Cell* alloc()
     return(hp++);
 }
 
-Cell* alloc(char char_val)
+Cell* new_cell(char char_val)
 {
-    Cell* p = alloc();
+    Cell* p = new_cell();
     p->type = CHAR_TYPE;
     p->char_val = char_val;
     return(p);
 }
 
-Cell* alloc(int32_t int_val)
+Cell* new_cell(int32_t int_val)
 {
-    Cell* p = alloc();
+    Cell* p = new_cell();
     p->type = INT_TYPE;
     p->int_val = int_val;
     return(p);

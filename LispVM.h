@@ -39,8 +39,8 @@ Cell* top();
 // Cell heap functions
 
 void initHeap();
-Cell* alloc(char char_val);
-Cell* alloc(int32_t int_val);
+Cell* new_cell(char char_val);
+Cell* new_cell(int32_t int_val);
 
 // User-level operations
 void add();
@@ -50,4 +50,5 @@ void sub();
 
 // Utility functions
 
+void newline();
 void fatal(const char* msg);

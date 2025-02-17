@@ -63,8 +63,17 @@ void print()
 
     switch (top()->type)
     {
+        case NULL_TYPE:
+            std::cout << "nil";
+            break;
+        case CONS_TYPE:
+            fatal("Cannot print() cons cell");
+            break;
+        case CHAR_TYPE:
+            std::cout << top()->char_val;
+            break;
         case INT_TYPE:
-            std::cout << top()->int_val << '\n';
+            std::cout << top()->int_val;
             break;
         default:
             fatal("Unknown cell type");
@@ -90,7 +99,7 @@ void push(int32_t i)
     }
 
     --sp;
-    *sp = alloc(i);
+    *sp = new_cell(i);
 }
 
 void push(char ch)
@@ -100,7 +109,7 @@ void push(char ch)
     }
 
     --sp;
-    *sp = alloc(ch);
+    *sp = new_cell(ch);
 }
 
 Cell* top()
