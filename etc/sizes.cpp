@@ -1,3 +1,4 @@
+#include <stddef.h>
 #include "stdio.h"
 #include "stdint.h"
 
@@ -10,6 +11,8 @@ typedef struct ConsCell {
 
 int main()
 {
+    printf("sizeof(max_align_t) = %d\n", sizeof(max_align_t));
+    printf("\n");
     printf("sizeof(int) = %d\n", sizeof(int));
     printf("sizeof(long int) = %d\n", sizeof(long int));
     printf("sizeof(uint8_t) = %d\n", sizeof(uint8_t));

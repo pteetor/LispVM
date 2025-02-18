@@ -27,7 +27,7 @@ void initStack()
     stack_start = &stack[STACK_SIZE];
     stack_limit = &stack[0];
 
-    // Initialize sp to indicate empty-stack condition
+    // Initialize sp to empty-stack condition
     sp = stack_start;
 }
 
@@ -44,42 +44,24 @@ void dup()
     push(top());
 }
 
-int32_t pop_int()
+Cell* pop()
 {
-    if (sp == stack_start) {
-        fatal("Stack underflow");
-    }
-    if ((*sp)->type != INT_TYPE) {
-        fatal("Top of stack is not an integer");
-    }
-    return((*sp++)->int_val);
+  if (sp == stack_start) {
+    fatal("Stack underflow");
+  }
+
+  return *sp++;
 }
 
-void print()
+int32_t pop_int()
 {
-    if (sp == stack_start) {
-        fatal("Stack underflow");
-    }
+  auto p = pop();
 
-    switch (top()->type)
-    {
-        case NULL_TYPE:
-            std::cout << "nil";
-            break;
-        case CONS_TYPE:
-            fatal("Cannot print() cons cell");
-            break;
-        case CHAR_TYPE:
-            std::cout << top()->char_val;
-            break;
-        case INT_TYPE:
-            std::cout << top()->int_val;
-            break;
-        default:
-            fatal("Unknown cell type");
-            break;
-    }
-    ++sp;
+  if (p->type != INT_TYPE) {
+    fatal("Top of stack is not an integer");
+  }
+
+  return p->int_val;
 }
 
 void push(Cell* p)
@@ -94,22 +76,17 @@ void push(Cell* p)
 
 void push(int32_t i)
 {
-    if (sp == stack_limit) {
-        fatal("Stack overflow");
-    }
-
-    --sp;
-    *sp = new_cell(i);
+  push(new_cell(i));
 }
 
 void push(char ch)
 {
-    if (sp == stack_limit) {
-        fatal("Stack overflow");
-    }
+  push(new_cell(ch));
+}
 
-    --sp;
-    *sp = new_cell(ch);
+void push(const char* str)
+{
+  push(new_cell(str));
 }
 
 Cell* top()

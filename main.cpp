@@ -9,6 +9,7 @@
 int main(int argc, char** argv) {
     initStack();
     initHeap();
+    initStrings();
 
     push(1);
     push(1);
@@ -23,6 +24,10 @@ int main(int argc, char** argv) {
     newline();
 
     push('h');
+    print();
+    newline();
+
+    push("hello, world");
     print();
     newline();
 

@@ -38,3 +38,11 @@ Cell* new_cell(int32_t int_val)
     p->int_val = int_val;
     return(p);
 }
+
+Cell* new_cell(const char* str)
+{
+  Cell* p = new_cell();
+  p->type = STRING_TYPE;
+  p->stringp = new_string(str);
+  return p;
+}
