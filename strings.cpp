@@ -86,9 +86,6 @@ uint16_t string_length(String* p)
 char* string_body(String* p)
 {
   return p->contents;
-
-  // WAS:
-  // return (char*) p + sizeof(*p);
 }
 
 // String space functions

@@ -50,8 +50,12 @@ struct String {
 // Stack functions
 
 void initStack();
-void drop();
+void collapse(int n);
+Cell* down(int n);
+void drop(int n);
 Cell* pop();
+Cell* pop(int n);
+Cell* pop_cons();
 int32_t pop_int();
 void push(Cell* p);
 void push(int32_t i);
@@ -65,6 +69,7 @@ void initHeap();
 Cell* new_cell(char char_val);
 Cell* new_cell(int32_t int_val);
 Cell* new_cell(const char* str);
+Cell* new_cell(Cell* car, Cell* cdr);
 
 // String functions
 
@@ -77,11 +82,25 @@ char* string_body(String* p);
 void visit_string_heap(void vistor(String*));
 void dump_string(String* p);
 
+// Permanent symbols
+
+void init_perm_symbols();
+
+extern Cell* nil_sym;
+extern Cell* t_sym;
+
 // User-level operations
+
 void add();
+void atomp();
+void car();
+void cdr();
+void cons();
+void consp();
 void div();
 void mult();
-void print();
+void nullp();
+void print_atom();
 void sub();
 
 // Utility functions

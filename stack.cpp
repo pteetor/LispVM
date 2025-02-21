@@ -20,6 +20,13 @@ static Cell** sp;
 static Cell** stack_start;
 static Cell** stack_limit;
 
+// Local utility functions
+
+static int stack_depth()
+{
+  return (stack_start - sp) + 1;
+}
+
 // Stack functions
 
 void initStack()
@@ -31,12 +38,22 @@ void initStack()
     sp = stack_start;
 }
 
-void drop()
+Cell* down(int n) {
+  if (stack_depth() < n)
+    fatal("Stack underflow (down)");
+  return sp[n];
+}
+
+void collapse(int n)
 {
-    if (sp == stack_start) {
-        fatal("Stack underflow");
-    }
-    ++sp;
+  push(pop(n));
+}
+
+void drop(int n)
+{
+  if (stack_depth() < n)
+    fatal("Stack underflow (drop)");
+  sp += n;
 }
 
 void dup()
@@ -47,10 +64,27 @@ void dup()
 Cell* pop()
 {
   if (sp == stack_start) {
-    fatal("Stack underflow");
+    fatal("Stack underflow (pop)");
   }
 
   return *sp++;
+}
+
+Cell* pop(int n)
+{
+  if (stack_depth() < n)
+    fatal("Stack underflow (pop n)");
+  auto temp = *sp;
+  sp += n;
+  return temp;
+}
+
+Cell* pop_cons()
+{
+  auto p = pop();
+  if (p->type != CONS_TYPE)
+    fatal("Top of stack is not a cons cell");
+  return p;
 }
 
 int32_t pop_int()
@@ -67,7 +101,7 @@ int32_t pop_int()
 void push(Cell* p)
 {
     if (sp == stack_limit) {
-        fatal("Stack overflow");
+        fatal("Stack overflow (push)");
     }
 
     --sp;
@@ -92,8 +126,8 @@ void push(const char* str)
 Cell* top()
 {
     if (sp == stack_start) {
-        fatal("Empty stack");
+        fatal("Empty stack (top)");
     }
 
-    return(*sp);
+    return *sp;
 }

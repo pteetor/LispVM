@@ -46,3 +46,12 @@ Cell* new_cell(const char* str)
   p->stringp = new_string(str);
   return p;
 }
+
+Cell* new_cell(Cell* car, Cell* cdr)
+{
+  Cell* p = new_cell();
+  p->type = CONS_TYPE;
+  p->car = car;
+  p->cdr = cdr;
+  return p;
+}
