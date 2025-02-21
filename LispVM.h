@@ -19,6 +19,9 @@ const short int INT_TYPE =  1 << 3;
 const short int DOUBLE_TYPE =  1 << 4;
 const short int STRING_TYPE =  1 << 5;
 
+const short ATOMIC_TYPES = NULL_TYPE | CHAR_TYPE | INT_TYPE | DOUBLE_TYPE | STRING_TYPE;
+const short LIST_TYPES = NULL_TYPE | CONS_TYPE;
+
 // Cell structure
 
 struct Cell {
@@ -98,6 +101,8 @@ void cdr();
 void cons();
 void consp();
 void div();
+void eqp();
+void listp();
 void mult();
 void nullp();
 void print_atom();

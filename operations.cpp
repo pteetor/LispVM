@@ -14,9 +14,7 @@ void add()
 void atomp()
 {
   auto type = pop()->type;
-  auto atom_types = CHAR_TYPE | INT_TYPE | DOUBLE_TYPE | INT_TYPE | STRING_TYPE;
-
-  if ((type & atom_types) != 0) {
+  if ((type & ATOMIC_TYPES) != 0) {
     push(t_sym);
   } else {
     push(nil_sym);
@@ -52,6 +50,52 @@ void div()
   auto y = pop_int();
   auto x = pop_int();
   push(x / y);
+}
+
+// BIG BUG: Must compare cell *contents*, not cell *pointers*
+void eqp()
+{
+  auto y = down(0);
+  auto x = down(1);
+  bool b;
+
+  if (x->type != y->type)
+    b = false;
+  else {
+    switch (x->type)
+    {
+    case NULL_TYPE:
+      b = true;
+      break;
+    case CONS_TYPE:
+      fatal("Cannot apply eqp() to cons");
+      break;
+    case CHAR_TYPE:
+      b = (x->char_val == y->char_val);
+      break;
+    case INT_TYPE:
+      b = (x->int_val == y->int_val);
+      break;
+    case DOUBLE_TYPE:
+      b = (x->double_val == y->double_val);
+      break;
+    case STRING_TYPE:
+      b = (x->stringp == y->stringp);
+      break;
+    default:
+      fatal("eqp() error");
+      break;
+    }
+  }
+
+  push(b ? t_sym : nil_sym);
+  collapse(3);
+}
+
+void listp()
+{
+  auto type = pop()->type;
+  ((type & LIST_TYPES) != 0) ? push(t_sym) : push(nil_sym);
 }
 
 void mult()

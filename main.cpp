@@ -32,16 +32,6 @@ int main(int argc, char** argv) {
     print_atom();
     newline();
 
-    auto hello1 = new_string("hello");
-    auto hello2 = new_string("hello");
-
-    newline();
-    push("---- String heap dump: ----");
-    print_atom();
-    newline();
-    visit_string_heap(dump_string);
-    newline();
-
     push("Is string an atom?\n");
     print_atom();
     push("moe");
@@ -90,6 +80,32 @@ int main(int argc, char** argv) {
     cons();
     cdr();
     print_atom();
+    newline();
+
+    push("moe == moe?\n");
+    print_atom();
+    push("moe");
+    push("moe");
+    eqp();
+    print_atom();
+    newline();
+
+    push("moe == larry?\n");
+    print_atom();
+    push("moe");
+    push("larry");
+    eqp();
+    print_atom();
+    newline();
+
+    auto hello1 = new_string("hello");
+    auto hello2 = new_string("hello");
+
+    newline();
+    push("---- String heap dump: ----");
+    print_atom();
+    newline();
+    visit_string_heap(dump_string);
     newline();
 
     // push("moe");
