@@ -2,6 +2,8 @@
 //  User-level operations on the LispVM
 //
 
+#include <iomanip>
+
 #include "LispVM.h"
 
 void add()
@@ -40,8 +42,12 @@ void print()
     std::cout << p->int_val;
     break;
   case STRING_TYPE:
-    printf("%*s", string_length(p->stringp), string_body(p->stringp));
+  {
+    auto s = p->stringp;
+    std::cout << std::setw(string_length(s)) << string_body(s);
+    // WAS: printf("%*s", string_length(p->stringp), string_body(p->stringp));
     break;
+  }
   default:
     fatal("Unknown cell type");
   break;

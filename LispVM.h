@@ -35,6 +35,18 @@ struct Cell {
   Cell* cdr;
 };
 
+// String structure
+
+struct String {
+  uint16_t flags;
+  uint16_t height;      // Height of AVL tree at this node
+  uint32_t length;      // Number of characters (following header)
+  String* left;         // Left branch of AVL tree
+  String* right;        // Right branch of AVL tree
+  String* fwd;          // Forwarding address for GC
+  char contents[0];
+};
+
 // Stack functions
 
 void initStack();
@@ -61,6 +73,9 @@ String* new_string(const char* str);
 
 uint16_t string_length(String* p);
 char* string_body(String* p);
+
+void visit_string_heap(void vistor(String*));
+void dump_string(String* p);
 
 // User-level operations
 void add();

@@ -31,6 +31,16 @@ int main(int argc, char** argv) {
     print();
     newline();
 
+    auto hello1 = new_string("hello");
+    auto hello2 = new_string("hello");
+
+    newline();
+    push("---- String heap dump: ----");
+    print();
+    newline();
+    visit_string_heap(dump_string);
+    newline();
+
     exit(0);
 }
 
